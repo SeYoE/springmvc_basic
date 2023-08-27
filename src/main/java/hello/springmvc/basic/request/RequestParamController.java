@@ -1,10 +1,12 @@
 package hello.springmvc.basic.request;
 
+import hello.springmvc.basic.HelloData;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -84,6 +86,37 @@ public class RequestParamController {
     // MultiValueMap -> (key:[value1, value2, value3])
     public String requestParamMap(@RequestParam Map<String, Object> paramMap) {
         log.info("username={}, age={}", paramMap.get("username"), paramMap.get("age"));
+        return "ok";
+    }
+
+    /**
+     * @ModelAttribute
+     * 1. HelloData 객체 생성
+     * 2. 요청 파라미터 이름으로 HelloData 객체의 프로퍼티(getter, setter) 찾음
+     *      찾은 setter 를 이용해서 파라미터의 값을 바인딩
+     *     -> username 파라미터에 대해서 setUsername() 메소드를 찾아서 호출
+     *
+     * 바인딩 오류
+     * 숫자가 들어가야 할 곳에 문자를 넣으면 BindException 발생
+     */
+    @ResponseBody
+    @RequestMapping("/model-attribute-v1")
+    public String modelAttributeV1(@ModelAttribute HelloData helloData) {
+        log.info(helloData.toString());
+        return "ok";
+    }
+
+    /**
+     * @ModelAttribute 생략 가능
+     * -> 근데 @RequestParam 도 생략 가능하잖아? 둘 중에 뭔지 어케 앎?
+     *
+     * String, int, Integer 같은 단순 타입 -> @RequestParam
+     * 나머지 -> @ModelAttribute (argument resolver 로 지정해둔 타입 외)
+     */
+    @ResponseBody
+    @RequestMapping("/model-attribute-v2")
+    public String modelAttributeV2(HelloData helloData) {
+        log.info(helloData.toString());
         return "ok";
     }
 }
