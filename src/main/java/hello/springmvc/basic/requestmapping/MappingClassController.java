@@ -1,6 +1,5 @@
 package hello.springmvc.basic.requestmapping;
 
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController("/mapping/users")
