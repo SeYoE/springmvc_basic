@@ -73,9 +73,13 @@ public class RequestParamController {
     public String requestParamDefault(
             // 빈 문자인 경우에도 defaultValue 가 적용됨
             // username= -> username = guest
-            @RequestParam(defaultValue = "guest") String username,
-            @RequestParam(defaultValue = "-1") Integer age) {
-        log.info("username={}, age={}", username, age);
+            @RequestParam(defaultValue = "-1") Long userId,
+//            @RequestParam(defaultValue = "guest") String username,
+//            @RequestParam(defaultValue = "-1") Integer age,
+            HttpServletRequest request) {
+        log.info("parameter userId = {}", request.getParameter("userId"));
+        log.info("real userId = {}", userId);
+//        log.info("username={}, age={}", username, age);
         return "ok";
     }
 
