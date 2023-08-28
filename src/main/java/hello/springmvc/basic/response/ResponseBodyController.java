@@ -13,7 +13,6 @@ import java.io.IOException;
 
 /**
  * @ResponseBody
- *
  * - Http body 에 문자 내용을 직접 변환
  * - view resolver 대신에 HttpMessageConverter 동작
  * - 기본 문자 처리 : StringHttpMessageConverter
@@ -29,6 +28,31 @@ import java.io.IOException;
  * ByteArrayHttpMessageConverter        -> 1순위. byte[]
  * StringHttpMessageConverter           -> 2순위. String
  * MappingJackson2HttpMessageConverter  -> 3순위. 객체 혹은 HashMap
+ *
+ * 그래서 Spring MVC의 어디?
+ *
+ * @RequestMapping 을 처리하는 핸들러 어뎁터 RequestMappingHandlerAdatper(요청 매핑 핸들러 어뎁터)
+ * - RequestMappingHandlerAdatper 는 ArgumentResolver 호출, ReturnValueHandler 수신
+ *
+ * ArgumentResolver
+ * - 컨트롤러의 파라미터, 어노테이션 정보 기반으로 전달할 데이터 생성
+ * - 아래 처럼 매우 다양한 파라미터를 유연하게 처리할 수 있는 근간
+ * - supportsParameter() 메소드로 파라미터 지원 여부를 판단
+ * - HttpServletRequest, Model, @RequestParam, @ModelAttribute, @RequestBody, HttpEntity
+ *
+ * ReturnValueHanlder
+ * - 컨트롤러의 반환 값을 변환
+ * - 컨트롤러에서 String 으로 뷰 이름을 반환해도 동작하는 근간
+ * - ModelAndView, @ResponseBody, HttpEntity
+ *
+ * *HTTP message Converter*
+ * - ArgumentResolver 가 사용
+ * - 요청의 경우
+ *  - @RequestBody 처리하는 ArgumentResolver, HttpEntity 처리하는 ArgumentResolver 존재
+ *  - 각 ArgumentResolver 들이 HTTP 메시지 컨버터 사용해 필요한 객체 생성
+ * - 응답의 경우
+ *  - @ResponseBody, HttpEntity 처리하는 ReturnValueHandler 존재
+ *  - 여기에서 메시지 컨버터 호출해서 응답 생성
  */
 @Slf4j
 //@Controller
