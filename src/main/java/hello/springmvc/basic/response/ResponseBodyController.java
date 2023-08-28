@@ -11,6 +11,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
+/**
+ * @ResponseBody
+ *
+ * - Http body 에 문자 내용을 직접 변환
+ * - view resolver 대신에 HttpMessageConverter 동작
+ * - 기본 문자 처리 : StringHttpMessageConverter
+ * - 기본 객체 처리 : MappingJackson2HttpMessageConverter
+ * - byte 처리 등 기타 여러 HttpMessageConverter 가 등록되어 있음
+ * - 응답의 경우 클라이언트의 Http accept 헤더와 서버의 컨트롤러 반환 타입 정보를 조합해서 컨버터 선택
+ *
+ * Spring MVC 는 다음 경우에 HTTP 메시지 컨버터 적용
+ * 1. HTTP 요청 : @RequestBody, HttpEntity(RequestEntity)
+ * 2. HTTP 응답 : @ResponeBody, HttpEntity(ResponseEntity)
+ *
+ * 종류
+ * ByteArrayHttpMessageConverter        -> 1순위. byte[]
+ * StringHttpMessageConverter           -> 2순위. String
+ * MappingJackson2HttpMessageConverter  -> 3순위. 객체 혹은 HashMap
+ */
 @Slf4j
 //@Controller
 //@ResponseBody
