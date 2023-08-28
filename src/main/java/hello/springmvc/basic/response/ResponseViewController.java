@@ -32,7 +32,7 @@ public class ResponseViewController {
      * 1. return type void
      * 2. @Controller 컨트롤러
      * 3. HttpServletResponse, OutputStream(Writer) 같은 HTTP 메시지 바디 처리 파라미터 부재
-     *  
+     *
      * 요청 URL 참고해서 논리 뷰 이름으로 사용함.
      */
     @RequestMapping("/response/hello")
